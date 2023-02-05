@@ -1,0 +1,93 @@
+   /* c_month.push_back(31 );
+      c_month.push_back(28 );
+      c_month.push_back(31 );
+      c_month.push_back(30 );
+      c_month.push_back(31 );
+
+      c_month.push_back(30 );
+      c_month.push_back(31 );
+      c_month.push_back(31 );
+      c_month.push_back(30 );
+      c_month.push_back(31 );
+
+      c_month.push_back(30 );
+      c_month.push_back(31 );
+   */   
+
+
+//ito ung code para macompare kung sino  mas higher or lower value per date
+
+#include<stdio.h>
+#include<iostream>
+#include <sstream>
+#include <iomanip>
+#include<ctime>
+
+
+time_t finp_tot_sec( int mon, int day, int year, int hour, int min, int sec){//2
+
+      time_t rawtime, date;
+      struct tm * timeinfo;
+
+      //int year=2013, month=5, day=7, hour = 5, min = 1, sec = 0;
+
+      //2013 * 265 = 533445 + (5pcs 31 + 28 + 31 + 30 + 31)= 151 + 7  5533603 * 1440
+
+      /* get current : */
+      //time ( &rawtime ); //or: rawtime = time(0);
+
+      rawtime = time(0);
+
+      /* convert to struct: */
+      timeinfo = localtime ( &rawtime ); 
+
+      /* now modify the timeinfo to the given date: */
+      timeinfo->tm_year   = year - 1900;
+      timeinfo->tm_mon    = mon - 1;    //months since January - [0,11]
+      timeinfo->tm_mday   = day;          //day of the month - [1,31] 
+      timeinfo->tm_hour   = hour;         //hours since midnight - [0,23]
+      timeinfo->tm_min    = min;          //minutes after the hour - [0,59]
+      timeinfo->tm_sec    = sec;          //seconds after the minute - [0,59]
+
+      /* call mktime: create unix time stamp from timeinfo struct */
+      date = mktime ( timeinfo );
+
+      //printf ("\nUntil the given date, since 1970/01/01 %li seconds have passed.\n", (long int)date);
+
+      return date;
+      
+}//2
+
+
+
+int main(  ){//2
+
+      long long int a;
+      long long int b;
+
+      a = finp_tot_sec(10, 5, 2020, 0, 0 , 0);
+      b = finp_tot_sec(1, 2, 2020, 0, 0 , 0);
+
+      time_t t_a = a;
+      //time_t t_b = b;
+
+      std::tm tm_a = *std::localtime( &t_a);
+ 
+      
+      //std::cout << "local time: " << std::put_time( &tm_a, "%c %Z" ); 
+
+      std::cout << "\n\na is " << a << "  local time: " << std::put_time( &tm_a, "%c %Z" ) << "\nb is " << b << "\n";
+
+
+
+
+      if (a < b ){//3
+      
+            std::cout << "\n a < b " << "\n";
+            
+      }else {//3
+
+            std::cout << "\n a >= b " << "\n";
+
+      }//3
+}//2
